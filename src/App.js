@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+
+import PomodoroTimer from './Components/PomodoroTimer/PomodoroTimer';
+import SignUp from './Components/Auth/SignUp';
+import Login from './Components/Auth/Login';
+import { useEffect, useState } from 'react';
+
+
+
 
 function App() {
-  return (
+  const [token, setToken] = useState(null);
+  useEffect(() => {
+    const tokenFromLocalStorage = localStorage.getItem('logintoken');
+    setToken(tokenFromLocalStorage)
+     },[])
+
+return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <Router>
+        <Routes>
+        <Route exact path="/" element={token != null ? <PomodoroTimer/>:<Login/>} />
+        <Route exact path="/login" element={ <Login/>} />
+        <Route exact path="/signup" element={ <SignUp/>} />
+      </Routes>
+    </Router>
     </div>
   );
 }
